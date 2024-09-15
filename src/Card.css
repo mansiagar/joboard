@@ -1,0 +1,11 @@
+.Container1 {
+  display: flex;
+  justify-content: center;
+}
+.card1 {
+  height: 400px;
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
