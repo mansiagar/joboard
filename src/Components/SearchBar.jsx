@@ -25,7 +25,7 @@ const SearchBar = ({
   const [FilteredJobs, setFilteredJobs] = useState([]);
   const [searchClicked, setsearchClicked] = useState(false);
   const [menuItem, setMenuItem] = useState("");
-
+  const [Loading, setLoading] = useState(true);
   const handleSelect = (type) => {
     setMenuItem(type);
   };
@@ -41,9 +41,11 @@ const SearchBar = ({
       .then((data) => {
         setJobList(data.jobs);
         setFilteredJobs(data.jobs);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching jobs:", error);
+        setLoading(false);
       });
   }, []);
 
@@ -168,23 +170,31 @@ const SearchBar = ({
           </PopupState>
         </Card>
       </div>
-      {searchClicked && (
-        <div className="FilteredResults">
-          {FilteredJobs.length > 0 ? (
-            FilteredJobs.map((job) => (
-              <JobItem
-                key={job.id}
-                id={job.id}
-                title={job.title}
-                company_name={job.company_name}
-                candidate_required_location={job.candidate_required_location}
-                job_type={job.job_type}
-                salary={job.salary}
-                onApply={() => {}}
-              />
-            ))
-          ) : (
-            <Typography>No results found</Typography>
+      {Loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <div>
+          {searchClicked && (
+            <div className="FilteredResults">
+              {FilteredJobs.length > 0 ? (
+                FilteredJobs.map((job) => (
+                  <JobItem
+                    key={job.id}
+                    id={job.id}
+                    title={job.title}
+                    company_name={job.company_name}
+                    candidate_required_location={
+                      job.candidate_required_location
+                    }
+                    job_type={job.job_type}
+                    salary={job.salary}
+                    onApply={() => {}}
+                  />
+                ))
+              ) : (
+                <Typography>No results found</Typography>
+              )}
+            </div>
           )}
         </div>
       )}
